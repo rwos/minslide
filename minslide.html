@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>minslide</title>
+        <style>
+            body {
+                background: #afaaaa;
+                font-family: Helvetica, Arial, sans-serif;
+                overflow: hidden;
+            }
+            section {
+                background: #fafafa;
+                border: 1pt solid #fff;
+                border-radius: .5em;
+                box-shadow: 0 0 .1em .1em #888;
+                color: #111;
+                overflow: hidden;
+                padding: 35px;
+                margin: 0;
+                position: absolute;
+                -webkit-transition: left .3s;
+                -moz-transition:    left .3s;
+                -o-transition:      left .3s;
+                transition:         left .3s;
+            }
+            h1, h2, h3, h4 {margin: 0; padding: 0;}
+            h1 {font-size: 120%;}
+            h2 {font-size: 110%;}
+            p, pre, code, ul, ol {margin: 0.5em 0 0.5em 0;}
+            p {color: #222;}
+            pre, code {background: #ddd}
+        </style>
+    </head>
+    <body>
+
+        <!-- slides start here -->
+
+        <section>
+            <h1>minslide</h1>
+            <h2>minimal html5 slide deck</h2>
+        </section>
+
+        <section>
+            <h1>features</h1>
+            <ul>
+                <li>single file</li>
+                <li>self-contained</li>
+                <li>doesn't need web access</li>
+                <li>doesn't do stuff you don't need</li>
+                <li>resolution independend (more or less)</li>
+                <li>slides link-able (<code>#</code>slide)</li>
+            </ul>
+            <p><small>(navigate with cursor keys)</small></p>
+        </section>
+
+        <section>
+            <h1>does not provide</h1>
+            <ul>
+                <li>fancy styling</li>
+                <li>too much cross-browser support</li>
+                <li>speaker's notes</li>
+                <li>table of contents</li>
+                <li>print version</li>
+                <li>...</li>
+            </ul>
+        </section>
+
+        <section>
+            <h1>copyright</h1>
+            <ul>
+                <li>CC0 (public domain)</li>
+                <li>do with it whatever you want</li>
+            </ul>
+        </section>
+
+        <section>
+            <h1>get it</h1>
+            <p>
+            at <a href="http://github.com/rwos/minslide">http://github.com/rwos/minslide</a>
+            </p>
+        </section>
+
+        <!-- end of slides -->
+
+        <script>
+            var show = 0;
+            var slides = document.getElementsByTagName("section");
+            function update() {
+                if (show < 0 || isNaN(show)) show = 0;
+                if (show >= slides.length) show = slides.length - 1;
+                // url
+                url_parts = (document.location + "").split("#");
+                document.location = url_parts[0] + "#" + show;
+                // slide
+                for (var i = 0; i < slides.length; i++) {
+                    if (i == show) {
+                        slides[i].style.left = ((window.innerWidth - slides[i].scrollWidth) / 2) + "px";
+                    } else if (i < show) {
+                        slides[i].style.left = -window.innerWidth + "px";
+                    } else {
+                        slides[i].style.left = 50 + window.innerWidth + "px";
+                    }
+                }
+            }
+            document.onkeydown = function(e) {
+                var event = window.event ? window.event : e;
+                if (event.keyCode == 37) {
+                    show--;
+                    event.preventDefault();
+                }
+                if (event.keyCode == 39) {
+                    show++;
+                    event.preventDefault();
+                }
+                update();
+            };
+            // init
+            for (var i = 0; i < slides.length; i++) {
+                var height = window.innerHeight - 80 - 35*2;
+                slides[i].style.height   = height + "px";
+                slides[i].style.top      = "40px";
+                slides[i].style.width    = Math.round((height/3.0)*4) + "px";
+                slides[i].style.fontSize = Math.round(height/15) + "px";
+            }
+            url_parts = (document.location + "").split("#");
+            if (url_parts.length == 2) {
+                show = parseInt(url_parts[1]);
+            }
+            update();
+        </script>
+    </body>
+</html>
+
