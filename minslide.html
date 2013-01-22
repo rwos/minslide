@@ -33,6 +33,15 @@
                 -o-transition:      left .3s;
                 transition:         left .3s;
             }
+            footer {
+                color: #444;
+                font-size: 60%;
+                text-align: center;
+                width: 90%;
+                position: absolute;
+                bottom: 10px;
+                text-align: center;
+            }
             h1, h2, h3, h4 {margin: 0; padding: 0;}
             h1 {font-size: 120%;}
             h2 {font-size: 110%;}
@@ -44,6 +53,10 @@
     <body>
 
         <!-- slides start here -->
+
+        <footer>
+            <a href="http://github.com/rwos/minslide">minslide</a> HTML presentation
+        </footer>
 
         <section>
             <h1>minslide</h1>
@@ -125,13 +138,20 @@
                 update();
             };
             // init
+            var footer = document.getElementsByTagName("footer");
             for (var i = 0; i < slides.length; i++) {
                 var height = window.innerHeight - 80 - 35*2;
                 slides[i].style.height   = height + "px";
                 slides[i].style.top      = "40px";
                 slides[i].style.width    = Math.round((height/3.0)*4) + "px";
                 slides[i].style.fontSize = Math.round(height/15) + "px";
+                // move footer into slides (but skip the very first slide)
+                if (footer.length > 0 && i > 0) {
+                    slides[i].appendChild(footer[0].cloneNode(true));
+                }
             }
+            // hide original footer
+            footer[0].style.display = "none";
             url_parts = (document.location + "").split("#");
             if (url_parts.length == 2) {
                 show = parseInt(url_parts[1]);
